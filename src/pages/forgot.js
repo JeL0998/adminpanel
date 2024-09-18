@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/lib/firebaseConfig'; // Ensure the path is correct
 import { toast } from 'react-toastify';
@@ -7,6 +8,7 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const router = useRouter();
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();
@@ -17,6 +19,10 @@ export default function ForgotPassword() {
       await sendPasswordResetEmail(auth, email);
       setMessage(`Password reset email has been sent to ${email}. Please check your inbox.`);
       toast.success('Password reset email sent!');
+      setTimeout(() => {
+        router.push('/'); // Redirect to home page after 3 seconds
+        toast.info('Redirecting to home page...');
+      }, 3000);
     } catch (error) {
       console.error('Error sending password reset email:', error);
       toast.error('Failed to send password reset email. Please check the email and try again.');
@@ -28,6 +34,12 @@ export default function ForgotPassword() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg border border-gray-200">
+        <button
+          onClick={() => router.back()}
+          className="mb-6 text-blue-600 hover:text-blue-800 transition duration-300"
+        >
+          &larr; Back
+        </button>
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-600">Reset Password</h2>
         {message && <p className="text-green-500 mb-4">{message}</p>}
         <form onSubmit={handlePasswordReset}>

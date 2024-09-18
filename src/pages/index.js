@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebaseConfig';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -61,8 +62,12 @@ export default function LoginPage() {
             Login
           </button>
           <div className="mt-4 flex flex-col space-y-2">
-            <a href="/forgot" className="text-blue-600 hover:font-bold">Forgot Password</a>
-            <a href="/register" className="text-blue-600 hover:font-bold">Register as a new user</a>
+            <Link href="/forgot">
+              <a className="text-blue-600 hover:font-bold">Forgot Password</a>
+            </Link>
+            <Link href="/register">
+              <a className="text-blue-600 hover:font-bold">Register as a new user</a>
+            </Link>
           </div>
         </form>
       </div>

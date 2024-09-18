@@ -4,7 +4,6 @@ export default function MyDocument() {
   return (
     <Html>
       <Head>
-        <title>Admin Panel</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="Admin Panel for managing the application." />
       </Head>

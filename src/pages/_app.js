@@ -1,15 +1,13 @@
-// src/pages/_app.js
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { auth } from '@/lib/firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
 import '@/styles/globals.css';
 import localFont from 'next/font/local';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from '@/components/Spinner';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import Head from 'next/head';
 
+// Load local fonts with Next.js font loader
 const robotoSans = localFont({
   src: '../fonts/RobotoRegular.ttf',
   variable: '--font-roboto-sans',
@@ -21,12 +19,8 @@ const robotoMono = localFont({
   weight: '100 900',
 });
 
-// Define routes that do not require authentication
-const noAuthRequired = ['/', '/register', '/forgot-password'];
-
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -38,21 +32,6 @@ function MyApp({ Component, pageProps }) {
     router.events.on('routeChangeComplete', handleRouteChangeComplete);
     router.events.on('routeChangeError', handleRouteChangeError);
 
-    const checkAuth = async () => {
-      return new Promise((resolve) => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-          setAuthChecked(true);
-          if (!user && !noAuthRequired.includes(router.pathname)) {
-            router.push('/'); // Redirect to login if not authenticated
-          }
-          unsubscribe();
-          resolve();
-        });
-      });
-    };
-
-    checkAuth();
-
     return () => {
       router.events.off('routeChangeStart', handleRouteChangeStart);
       router.events.off('routeChangeComplete', handleRouteChangeComplete);
@@ -60,19 +39,12 @@ function MyApp({ Component, pageProps }) {
     };
   }, [router]);
 
-  if (!authChecked) {
-    return <Spinner />;
-  }
-
   return (
     <main className={`${robotoSans.variable} ${robotoMono.variable}`}>
-      {noAuthRequired.includes(router.pathname) ? (
-        <Component {...pageProps} />
-      ) : (
-        <ProtectedRoute>
-          <Component {...pageProps} />
-        </ProtectedRoute>
-      )}
+      <Head>
+        <title>Admin Panel</title>
+      </Head>
+      <Component {...pageProps} />
       <ToastContainer />
     </main>
   );
