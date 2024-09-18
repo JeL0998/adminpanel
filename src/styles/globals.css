@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "primeicons/primeicons.css";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717; /* Dark text color */
+  --text-color: #333333; /* Dark gray text color for better readability */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed; /* Light text color for dark mode */
+    --text-color: #6e6e6e; /* Light gray text color for better readability */
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.text-primary {
+  color: var(--text-color);
+}
+
+/* styles/globals.css or another CSS file */
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 50%;
+  margin: auto;
+  color: black;
+}
+
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
